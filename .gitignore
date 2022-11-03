@@ -1,0 +1,16 @@
+**/node_modules
+**/dist
+target
+tags
+**/*.rs.bk
+.anchor/
+.vscode/
+config_user.json
+config_admin.json
+.idea
+*DS_Store
+test-ledger
+**/.tsbuildinfo
+**/.lock
+localnet/gen/jfi/*.json
+localnet/gen/ray/*.json
