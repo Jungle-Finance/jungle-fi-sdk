@@ -27,7 +27,7 @@ $ npm intall @junglefinance/jungle-fi-sdk --save
 | Quarry    | I-JFI-Q4 | `8ua2wwcuGL9s1hrtcgH8x7KfwvEKXi95aqvJkmiLnKV8` |
 | Raydium   | I-RAY-Q3 | `2QeZFinvmrinXk9nuLHRvDfW4cWnQMDG7RV3utzHrPHw` |
 | Raydium   | I-RAY-Q4 | `HwK7u9crC5WjhxmmaxhFgVPbN3anjtbMg3y3uD4iSQEQ` |
-| Marinade  | I-SOL-Q3 | ``  |
+| Marinade  | I-SOL-Q3 | `BRrVBo3VkisZS1rXkuhp3QKua4S9nEE8kPN6RWXRDdTM`  |
 
 # Example
 This is an example on depositing into a Marinade vault however there are various different ways to utilize the sdk,
