@@ -24,7 +24,6 @@ function simpleStringify(object: any[]) {
             arr.push(key);
         }
     }
-    console.log("Cached: ", arr);
     return JSON.stringify(arr); // returns cleaned up JSON
 }
 

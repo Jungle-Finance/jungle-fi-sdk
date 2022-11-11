@@ -1,7 +1,7 @@
 {
     "name": "@junglefinance/jungle-fi-sdk",
     "description": "Library to interact with Jungle Finance staking vaults.",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "scripts": {
         "build": "tsc",
         "lint": "eslint . --ext .ts --resolve-plugins-relative-to . --fix"
