@@ -27,16 +27,17 @@ $ npm intall @junglefinance/jungle-fi-sdk --save
 | Quarry    | I-JFI-Q4 | `8ua2wwcuGL9s1hrtcgH8x7KfwvEKXi95aqvJkmiLnKV8` |
 | Raydium   | I-RAY-Q3 | `2QeZFinvmrinXk9nuLHRvDfW4cWnQMDG7RV3utzHrPHw` |
 | Raydium   | I-RAY-Q4 | `HwK7u9crC5WjhxmmaxhFgVPbN3anjtbMg3y3uD4iSQEQ` |
-| Marinade  | I-SOL-Q3 | `iSoLXhjuJJz1pRPd6MkwhGn6Q8qCybZzK9F77dDGK2C`  |
+| Marinade  | I-SOL-Q3 | ``  |
 
 # Example
 This is an example on depositing into a Marinade vault however there are various different ways to utilize the sdk,
 this is just one of them.
+
+### Setup Code
 ```ts
 import { JungleMsolPlatformProvider } from "../jungle_msol";
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { EndPoint } from "./types";
-import JSBI from "jsbi";
 
 const provider = new JungleMsolPlatformProvider(
     new Connection("https://api.devnet.solana.com"),
@@ -44,21 +45,19 @@ const provider = new JungleMsolPlatformProvider(
     EndPoint.dev
 );
 
+const VAULT_INFO = new PublicKey("iSoLXhjuJJz1pRPd6MkwhGn6Q8qCybZzK9F77dDGK2C");
+```
+### Deposit
+```ts
+import { Keypair } from "@solana/web3.js";
+
+... (Setup Code)
+
 const math = provider.createMath();
 
-const VAULT_INFO = new PublicKey("iSoLXhjuJJz1pRPd6MkwhGn6Q8qCybZzK9F77dDGK2C");
 const DEPOSIT_AMOUNT = 1_000_000;
 
 const vaultInfo = await provider.fetchVault(VAULT_INFO);
-
-// Amounts in lamports
-const returnAmounts = await math.calcDepositReturns(JSBI.BigInt(DEPOSIT_AMOUNT), vaultInfo);
-if (returnAmounts.error){
-    console.log("Math Error: " + returnAmounts.error);
-    // Abort!
-} else {
-    console.log("Return Amount: " + returnAmounts.result);
-}
 
 const signer = Keypair.generate(); // Your Signer Here!
 
@@ -70,6 +69,21 @@ const txId = await provider.depositRpc(
 )
 
 console.log("Transaction Signature: " + txId);
+```
+
+### Math Library 
+```ts
+import JSBI from "jsbi";
+
+... (Setup Code)
+
+// Amounts in lamports
+const returnAmounts = await math.calcDepositReturns(JSBI.BigInt(DEPOSIT_AMOUNT), vaultInfo);
+if (returnAmounts.error){
+    console.log("Math Error: " + returnAmounts.error);
+} else {
+    console.log("Return Amount: " + returnAmounts.result);
+}
 ```
 
 # Build
