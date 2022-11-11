@@ -115,13 +115,6 @@ export class MsolVaultMath extends GenericVaultMath<VaultInfo> {
         amount: JSBI,
         vaultInfo: VaultInfo
     ): Promise<ContractMathResult<JSBI>> {
-        if (!vaultInfo.msolPerMegasolInitial) {
-            return {
-                error: "vaultInfo's msolPerMegasolInitial is null",
-                result: null
-            };
-        }
-
         const i_supply = await this.cache.cacheResult(
             fetchTokenSupply,
             vaultInfo.iMint,
@@ -137,6 +130,13 @@ export class MsolVaultMath extends GenericVaultMath<VaultInfo> {
         );
         if (depositCheck) {
             return depositCheck;
+        }
+
+        if (!vaultInfo.msolPerMegasolInitial) {
+            return {
+                error: "vaultInfo's msolPerMegasolInitial is null",
+                result: null
+            };
         }
 
         const initialExchangeRate = JSBI.BigInt(vaultInfo.msolPerMegasolInitial);
