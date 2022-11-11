@@ -10,15 +10,21 @@ function simpleStringify(object: any[]) {
     const arr: any[] = [];
     for (const key of object) {
         const type = typeof key;
-        if (
-            type == typeof PublicKey ||
-            type == typeof JSBI ||
+
+        if (type == "object"){
+            if (key instanceof PublicKey){
+                arr.push(key.toBase58())
+            } else if (key instanceof JSBI){
+                arr.push(JSBI.toNumber(key));
+            }
+        } else if (
             type == "string" ||
             type == "number"
         ) {
             arr.push(key);
         }
     }
+    console.log("Cached: ", arr);
     return JSON.stringify(arr); // returns cleaned up JSON
 }
 
