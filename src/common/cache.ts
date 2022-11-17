@@ -12,9 +12,9 @@ function simpleStringify(object: any[]) {
         const type = typeof key;
 
         if (type == "object"){
-            if (key instanceof PublicKey){
+            if (key instanceof PublicKey || key.constructor.name == PublicKey.prototype.constructor.name){
                 arr.push(key.toBase58())
-            } else if (key instanceof JSBI){
+            } else if (key instanceof JSBI || key.constructor.name == JSBI.prototype.constructor.name){
                 arr.push(JSBI.toNumber(key));
             }
         } else if (

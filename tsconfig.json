@@ -6,7 +6,7 @@
     "skipLibCheck": true, // TODO remove after fix anchor
     "moduleResolution": "node",
     "module": "commonjs",
-    "target": "es2019",
+    "target": "es2021",
     "outDir": "dist/",
     "rootDir": "src/",
     "sourceMap": true,

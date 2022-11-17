@@ -49,14 +49,14 @@ export abstract class VaultMath<V> {
     abstract calcIRedeemPoolAmount(vaultInfo: V): Promise<ContractMathResult<JSBI>>;
 
     abstract calcYieldPercentages(vaultInfo: V): Promise<PercentageYield>;
+
+    abstract fetchStakedAmount(vaultInfo: V): Promise<number>;
 }
 
 export abstract class GenericVaultMath<V extends JungleVaultInfo> extends VaultMath<V> {
     constructor(connection: Connection, cacheTimeoutMs: number) {
         super(connection, cacheTimeoutMs);
     }
-
-    abstract fetchStakedAmount(vaultInfo: V): Promise<number>;
 
     async calcRedeemIAndJReturns(
         ij_amount: JSBI,
