@@ -53,8 +53,6 @@ import { Keypair } from "@solana/web3.js";
 
 ... (Setup Code)
 
-const math = provider.createMath();
-
 const DEPOSIT_AMOUNT = 1_000_000;
 
 const vaultInfo = await provider.fetchVault(VAULT_INFO);
@@ -76,6 +74,8 @@ console.log("Transaction Signature: " + txId);
 import JSBI from "jsbi";
 
 ... (Setup Code)
+
+const math = provider.createMath();
 
 // Amounts in lamports
 const returnAmounts = await math.calcDepositReturns(JSBI.BigInt(DEPOSIT_AMOUNT), vaultInfo);
