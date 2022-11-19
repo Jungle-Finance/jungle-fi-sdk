@@ -144,6 +144,13 @@ export function calcDepositReturnChecks(
     i_supply: JSBI,
     total_staked: JSBI
 ): ContractMathResult<JSBI> | null {
+    if (JSBI.equal(amount, ZERO)){
+        return {
+            result: ZERO,
+            error: null
+        }
+    }
+
     if ("warmup" in vaultPhase) {
         return {
             result: amount,

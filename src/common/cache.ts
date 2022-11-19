@@ -1,28 +1,19 @@
-import { PublicKey } from "@solana/web3.js";
-import JSBI from "jsbi";
-
 interface CachedResult {
     timestamp: number;
     result: any;
 }
 
+(BigInt.prototype as any).toJSON = function () {
+    return this.toString();
+};
+
 function simpleStringify(object: any[]) {
     const arr: any[] = [];
     for (const key of object) {
-        const type = typeof key;
-
-        if (type == "object"){
-            if (key instanceof PublicKey || key.constructor.name == PublicKey.prototype.constructor.name){
-                arr.push(key.toBase58())
-            } else if (key instanceof JSBI || key.constructor.name == JSBI.prototype.constructor.name){
-                arr.push(JSBI.toNumber(key));
-            }
-        } else if (
-            type == "string" ||
-            type == "number"
-        ) {
-            arr.push(key);
+        if (typeof key == "object" && typeof key.toJSON !== "function"){
+            continue
         }
+        arr.push(key);
     }
     return JSON.stringify(arr); // returns cleaned up JSON
 }

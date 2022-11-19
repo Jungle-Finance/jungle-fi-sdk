@@ -140,21 +140,37 @@ export class MsolVaultMath extends GenericVaultMath<VaultInfo> {
         }
 
         const initialExchangeRate = JSBI.BigInt(vaultInfo.msolPerMegasolInitial);
-
-        // fetch current exchangeRate
-        const mSolPrice =
-            (await this.cache.cacheResult(
-                readUint64FromAccount,
-                vaultInfo.msolState,
-                this.connection,
-                512
-            )) / 0x1_0000_0000;
-
+        console.log("initialExchangeRate:" + JSBI.toNumber(initialExchangeRate));
         const LAMPORTS_PER_MEGASOL = 1_000_000_000_000_000;
-        const exchangeRate = JSBI.BigInt(Math.floor(LAMPORTS_PER_MEGASOL / mSolPrice));
+
+        const msolPriceFromState = ((await this.cache.cacheResult(
+            readUint64FromAccount,
+            vaultInfo.msolState,
+            this.connection,
+            512
+        )) / 0x1_0000_0000);
+
+        /*
+
+            initialExchangeRate is the amount of MSOL Lamports worth 1_000_000 SOL
+
+            time ---->
+                sol per msol increases
+                msol per sol decreases
+
+            1 msol
+            >1 sol in return after X time
+
+         */
+
+        // Get into mega MSOL lamports from mega SOL lamports
+        // (1 / msolPrice) * 1_000_000_000_000_000
+        const currentExchangeRate = JSBI.BigInt(Math.floor(LAMPORTS_PER_MEGASOL / msolPriceFromState));
+
+        console.log("currentExchangeRate: " + JSBI.toNumber(currentExchangeRate));
 
         // calc returnAmount = amount * exchangeRate / initialExchangeRate
-        const returnAmount = JSBI.divide(JSBI.multiply(amount, exchangeRate), initialExchangeRate);
+        const returnAmount = JSBI.divide(JSBI.multiply(amount, currentExchangeRate), initialExchangeRate);
 
         return {
             error: null,
