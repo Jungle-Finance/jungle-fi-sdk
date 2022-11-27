@@ -39,7 +39,10 @@ export const ONE = JSBI.BigInt(1);
 */
 export const STAKED_DUST_THRESHOLD = JSBI.BigInt(2);
 
-export function subtractFees(amount: JSBI, fee_rate: number): ContractMathResult<AmountAfterFees> {
+export function mathSubtractFees(
+    amount: JSBI,
+    fee_rate: number
+): ContractMathResult<AmountAfterFees> {
     const fees = JSBI.BigInt(Math.floor(JSBI.toNumber(amount) * fee_rate)); // Floor here since we just convert to u64 in rust code
     const net = JSBI.subtract(amount, fees);
     const gross = JSBI.add(fees, net);
@@ -62,7 +65,7 @@ export function subtractFees(amount: JSBI, fee_rate: number): ContractMathResult
     };
 }
 
-export function calcRedeemIAndJReturns(
+export function mathCalcRedeemIAndJReturns(
     vaultPhase: VaultPhase,
     ij_amount: JSBI,
     i_supply: JSBI,
@@ -72,21 +75,20 @@ export function calcRedeemIAndJReturns(
     // TODO check this behavior, we used to error out on i_supply == 0 although I think this is better
     // TODO I think subtractFees will just return an amount to small though?
     if ("expired" in vaultPhase || JSBI.equal(i_supply, ZERO)) {
-        return subtractFees(ZERO, fee_rate);
+        return mathSubtractFees(ZERO, fee_rate);
     }
 
     if ("warmup" in vaultPhase) {
-        return subtractFees(ij_amount, fee_rate);
+        return mathSubtractFees(ij_amount, fee_rate);
     }
 
     // do math
     // let gross = ij_amount * total_staked / i_supply;
     const gross = JSBI.divide(JSBI.multiply(ij_amount, total_staked), i_supply);
-
-    return subtractFees(gross, fee_rate);
+    return mathSubtractFees(gross, fee_rate);
 }
 
-export function calcRedeemIReturns(
+export function mathCalcRedeemIReturns(
     vaultPhase: VaultPhase,
     i_amount: JSBI,
     i_supply: JSBI,
@@ -101,17 +103,17 @@ export function calcRedeemIReturns(
         i_supply
     );
 
-    return subtractFees(amount_before_fees, fee_rate);
+    return mathSubtractFees(amount_before_fees, fee_rate);
 }
 
-export function calcRedeemJReturns(
+export function mathCalcRedeemJReturns(
     amountJ: JSBI,
     feeRate: number
 ): ContractMathResult<AmountAfterFees> {
-    return subtractFees(amountJ, feeRate);
+    return mathSubtractFees(amountJ, feeRate);
 }
 
-export function calcToRedeemPoolsAmounts(
+export function mathCalcToRedeemPoolsAmounts(
     staked_this_lifecycle: JSBI,
     holding_pool_balance: JSBI
 ): ContractMathResult<RedeemPoolAmounts> {
@@ -138,17 +140,17 @@ export function calcToRedeemPoolsAmounts(
     }
 }
 
-export function calcDepositReturnChecks(
+export function mathCalcDepositReturnChecks(
     vaultPhase: VaultPhase,
     amount: JSBI,
     i_supply: JSBI,
     total_staked: JSBI
 ): ContractMathResult<JSBI> | null {
-    if (JSBI.equal(amount, ZERO)){
+    if (JSBI.equal(amount, ZERO)) {
         return {
             result: ZERO,
             error: null
-        }
+        };
     }
 
     if ("warmup" in vaultPhase) {

@@ -18,8 +18,7 @@ export async function readUint64FromAccount(
     if (!accountInfo) {
         return 0;
     }
-
-    return Number(new DataView(accountInfo.data.buffer, offset).getBigUint64(0, true));
+    return Number(accountInfo.data.readBigUInt64LE(offset));
 }
 
 export function getVaultPhaseKey(vaultPhase: VaultPhase): VaultPhaseKey | null {

@@ -1,10 +1,10 @@
 import {
     AmountAfterFees,
-    calcDepositReturnChecks,
-    calcRedeemIAndJReturns,
-    calcRedeemIReturns,
-    calcRedeemJReturns,
-    calcToRedeemPoolsAmounts,
+    mathCalcDepositReturnChecks,
+    mathCalcRedeemIAndJReturns,
+    mathCalcRedeemIReturns,
+    mathCalcRedeemJReturns,
+    mathCalcToRedeemPoolsAmounts,
     ContractMathResult,
     J_REDEEM_POOL_AMOUNT_TO_SMALL,
     PercentageYield,
@@ -62,7 +62,7 @@ export abstract class GenericVaultMath<V extends JungleVaultInfo> extends VaultM
         ij_amount: JSBI,
         vaultInfo: V
     ): Promise<ContractMathResult<AmountAfterFees>> {
-        return calcRedeemIAndJReturns(
+        return mathCalcRedeemIAndJReturns(
             vaultInfo.lifecyclePhase,
             ij_amount,
             await this.cache.cacheResult(fetchTokenSupply, vaultInfo.iMint, this.connection),
@@ -84,7 +84,7 @@ export abstract class GenericVaultMath<V extends JungleVaultInfo> extends VaultM
             };
         }
 
-        return calcRedeemIReturns(
+        return mathCalcRedeemIReturns(
             vaultInfo.lifecyclePhase,
             i_amount,
             await this.cache.cacheResult(fetchTokenSupply, vaultInfo.iMint, this.connection),
@@ -115,7 +115,7 @@ export abstract class SharedVaultMath<V extends SharedVaultInfo> extends Generic
             };
         }
 
-        return calcRedeemJReturns(amountJ, jAuthority.feeRate);
+        return mathCalcRedeemJReturns(amountJ, jAuthority.feeRate);
     }
 
     async calcDepositReturns(amount: JSBI, vaultInfo: V): Promise<ContractMathResult<JSBI>> {
@@ -126,7 +126,7 @@ export abstract class SharedVaultMath<V extends SharedVaultInfo> extends Generic
         );
         const total_staked = JSBI.BigInt(await this.fetchStakedAmount(vaultInfo));
 
-        const depositCheck = calcDepositReturnChecks(
+        const depositCheck = mathCalcDepositReturnChecks(
             vaultInfo.lifecyclePhase,
             amount,
             i_supply,
@@ -169,7 +169,7 @@ export abstract class SharedVaultMath<V extends SharedVaultInfo> extends Generic
     }
 
     async calcToRedeemPoolsAmounts(vaultInfo: V): Promise<ContractMathResult<RedeemPoolAmounts>> {
-        return calcToRedeemPoolsAmounts(
+        return mathCalcToRedeemPoolsAmounts(
             JSBI.BigInt(vaultInfo.jMintedThisLifecycle),
             await this.cache.cacheResult(
                 fetchTokenAccountBalance,

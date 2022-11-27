@@ -7,7 +7,12 @@ const NUM_CRANKS_PER_YEAR = 105_120; // 365*24*60/5 ie every 5 mins
 
 export class QuarryVaultMath extends SharedVaultMath<VaultInfo> {
     async fetchStakedAmount(vaultInfo: VaultInfo): Promise<number> {
-        return this.cache.cacheResult(readUint64FromAccount, vaultInfo.miner, this.connection, 129);
+        return await this.cache.cacheResult(
+            readUint64FromAccount,
+            vaultInfo.miner,
+            this.connection,
+            129
+        );
     }
 
     /*

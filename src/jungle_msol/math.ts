@@ -2,9 +2,9 @@ import { GenericVaultMath } from "../common/shared";
 import { VaultInfo } from "./types";
 import {
     AmountAfterFees,
-    calcDepositReturnChecks,
-    calcRedeemJReturns,
-    calcToRedeemPoolsAmounts,
+    mathCalcDepositReturnChecks,
+    mathCalcRedeemJReturns,
+    mathCalcToRedeemPoolsAmounts,
     ContractMathResult,
     J_REDEEM_POOL_AMOUNT_TO_SMALL,
     PercentageYield,
@@ -65,7 +65,7 @@ export class MsolVaultMath extends GenericVaultMath<VaultInfo> {
             };
         }
 
-        return calcRedeemJReturns(amountJ, jAuthority.feeRate);
+        return mathCalcRedeemJReturns(amountJ, jAuthority.feeRate);
     }
 
     /**
@@ -122,7 +122,7 @@ export class MsolVaultMath extends GenericVaultMath<VaultInfo> {
         );
         const total_staked = JSBI.BigInt(await this.fetchStakedAmount(vaultInfo));
 
-        const depositCheck = calcDepositReturnChecks(
+        const depositCheck = mathCalcDepositReturnChecks(
             vaultInfo.lifecyclePhase,
             amount,
             i_supply,
@@ -172,7 +172,7 @@ export class MsolVaultMath extends GenericVaultMath<VaultInfo> {
         vaultInfo: VaultInfo
     ): Promise<ContractMathResult<RedeemPoolAmounts>> {
         // TODO check to see if we should return the mSOL amount or conversion to SOL while we are un unstaking before expired.
-        return calcToRedeemPoolsAmounts(
+        return mathCalcToRedeemPoolsAmounts(
             JSBI.BigInt(vaultInfo.jMintedThisLifecycle),
             await this.cache.cacheResult(
                 fetchAccountBalance,
