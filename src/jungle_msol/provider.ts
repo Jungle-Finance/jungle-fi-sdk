@@ -13,6 +13,7 @@ import {
     LIQ_POOL_MSOL_LEG_AUTHORITY,
     LIQ_POOL_SOL_LEG_PDA,
     LIQUID_STAKING_PROGRAM,
+    MSOL_MINT,
     MSOL_MINT_AUTHORITY,
     RESERVE_PDA
 } from "./msol";
@@ -47,7 +48,7 @@ export class JungleMsolPlatformProvider extends VaultPlatformProvider<JungleMsol
     getVaultRedeemLayout(vaultInfo: VaultInfo): VaultRedeemLayout {
         return {
             Warmup: "Native-SOL",
-            Active: vaultInfo.msolMint,
+            Active: "mSOL",
             Expired: "Native-SOL",
             Unstaking: null
         };
@@ -67,7 +68,6 @@ export class JungleMsolPlatformProvider extends VaultPlatformProvider<JungleMsol
                 vaultInfo: vault.publicKey,
                 iMint: vault.iMint,
                 jMint: vault.jMint,
-                msolMint: vault.msolMint,
                 iTo,
                 jTo,
                 solHoldingPool: vault.solHoldingPool,
@@ -92,7 +92,7 @@ export class JungleMsolPlatformProvider extends VaultPlatformProvider<JungleMsol
     redeemIAndJ(amount: number, userAddress: anchor.web3.PublicKey, vault: Vault) {
         const [to, iFrom, jFrom] = findMultipleAssociatedTokenAddress(
             userAddress,
-            vault.msolMint,
+            MSOL_MINT,
             vault.iMint,
             vault.jMint
         );
@@ -102,7 +102,7 @@ export class JungleMsolPlatformProvider extends VaultPlatformProvider<JungleMsol
             .accounts({
                 withdrawAuthority: userAddress,
                 vaultInfo: vault.publicKey,
-                msolMint: vault.msolMint,
+                msolMint: MSOL_MINT,
                 iMint: vault.iMint,
                 jMint: vault.jMint,
                 msolTo: to,
@@ -183,7 +183,7 @@ export class JungleMsolPlatformProvider extends VaultPlatformProvider<JungleMsol
                 .accounts({
                     executor: executor,
                     vaultInfo: vault.publicKey,
-                    msolMint: vault.msolMint,
+                    msolMint: MSOL_MINT,
                     solHoldingPool: vault.solHoldingPool,
                     msolHoldingPool: vault.msolHoldingPool,
                     msolState: vault.msolState,
@@ -206,7 +206,7 @@ export class JungleMsolPlatformProvider extends VaultPlatformProvider<JungleMsol
                 .accounts({
                     executor: executor,
                     vaultInfo: vault.publicKey,
-                    msolMint: vault.msolMint,
+                    msolMint: MSOL_MINT,
                     solHoldingPool: vault.solHoldingPool,
                     msolHoldingPool: vault.msolHoldingPool,
                     claimTicket: vault.claimTicket,

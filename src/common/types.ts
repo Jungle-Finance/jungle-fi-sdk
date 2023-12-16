@@ -44,5 +44,5 @@ export const VaultLifecyclePhase: TypedKeyMap<VaultPhaseKey, VaultPhase> = {
     Expired: { expired: {} }
 };
 
-export type Asset = PublicKey | "Native-SOL" | null; // Supports SPL token mint, native solana, and no asset
+export type Asset = PublicKey | "Native-SOL" | "mSOL" | null; // Supports SPL token mint, native solana, and no asset
 export type VaultRedeemLayout = TypedKeyMap<VaultPhaseKey, Asset>;
