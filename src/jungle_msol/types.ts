@@ -11,21 +11,28 @@ export type VaultInfo = {
     activePhaseEndTimestamp: anchor.BN;
     iMint: anchor.web3.PublicKey;
     jMint: anchor.web3.PublicKey;
-    msolMint: anchor.web3.PublicKey;
     jAuthority: anchor.web3.PublicKey;
     lifecyclePhase: any;
+    pad0: any;
     //vaultLifecyclePhase: VaultPhase;
     //vaultLifecyclePhase: typeof VaultLifecyclePhase;
     solFeeWallet: anchor.web3.PublicKey;
     msolFeeWallet: anchor.web3.PublicKey;
     feeRate: number;
     bump: number;
+    pad1: any;
     iRedeemPool: anchor.web3.PublicKey;
     jRedeemPool: anchor.web3.PublicKey;
     solHoldingPool: anchor.web3.PublicKey;
     msolHoldingPool: anchor.web3.PublicKey;
     jMintedThisLifecycle: anchor.BN;
     msolState: anchor.web3.PublicKey;
-    msolPerMegasolInitial: anchor.BN | null;
-    claimTicket: any;
+    msolPerMegasolInitial: OptionNonzeroU64;
+    claimTicket: anchor.web3.PublicKey;
+    eventId: anchor.BN;
+    space: any;
 };
+
+export type OptionNonzeroU64 = {
+    inner: anchor.BN;
+}
